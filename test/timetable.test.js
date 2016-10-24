@@ -1,5 +1,5 @@
 import { parseFile } from '../lib/parser';
-import { getPositionByTime, getStateByTime } from '../lib/timetable';
+import { getPositionByTime, getActivityByTime } from '../lib/timetable';
 import { MORNING, EVENING, DAYOFF, BREAK, LESSON } from '../lib/constants';
 import moment from 'moment';
 import { expect } from 'chai';
@@ -56,9 +56,9 @@ describe('Timetable', () => {
 
     });
 
-    describe('#getStateByTime()', () => {
+    describe('#getActivityByTime()', () => {
       it('should return state for lesson 0', () => {
-        const state = getStateByTime(parseRulults, moment('Monday September 5 2016 08:30', 'dddd MMMM D YYYY HH:mm'));
+        const state = getActivityByTime(parseRulults, moment('Monday September 5 2016 08:30', 'dddd MMMM D YYYY HH:mm'));
         expect(state.type).to.equal(LESSON);
         expect(state.lessonName).to.equal('Фізкультура');
         expect(state.lessonNumber).to.equal(0);
@@ -67,7 +67,7 @@ describe('Timetable', () => {
       });
 
       it('should return state for break 0', () => {
-        const state = getStateByTime(parseRulults, moment('Monday September 5 2016 08:46', 'dddd MMMM D YYYY HH:mm'));
+        const state = getActivityByTime(parseRulults, moment('Monday September 5 2016 08:46', 'dddd MMMM D YYYY HH:mm'));
         expect(state.type).to.equal(BREAK);
         expect(state.timeRange[0].format('HH:mm')).to.equal('08:45');
         expect(state.timeRange[1].format('HH:mm')).to.equal('08:55');
@@ -76,13 +76,18 @@ describe('Timetable', () => {
       });
 
       it('should return DAYOFF state for Saturday', () => {
-        const state = getStateByTime(parseRulults, moment('Saturday September 3 2016 12:00', 'dddd MMMM D YYYY HH:mm'));
+        const state = getActivityByTime(parseRulults, moment('Saturday September 3 2016 12:00', 'dddd MMMM D YYYY HH:mm'));
         expect(state.type).to.equal('DAYOFF');
       });
 
       it('should return DAYOFF state for Sunday', () => {
-        const state = getStateByTime(parseRulults, moment('Sunday September 4 2016 12:00', 'dddd MMMM D YYYY HH:mm'));
+        const state = getActivityByTime(parseRulults, moment('Sunday September 4 2016 12:00', 'dddd MMMM D YYYY HH:mm'));
         expect(state.type).to.equal('DAYOFF');
+      });
+
+      it('should not return MORNING state for Monday September 5 2016 08:45', () => {
+        const state = getActivityByTime(parseRulults, moment('Monday September 5 2016 08:45', 'dddd MMMM D YYYY HH:mm'));
+        expect(state.type).to.equal('LESSON');
       });
     });
   });

@@ -7,5 +7,8 @@
           "modules": true,
           "experimentalObjectRestSpread": true
       }
+  },
+  "rules": {
+    "no-undef": 2
   }
 }

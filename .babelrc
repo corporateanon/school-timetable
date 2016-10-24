@@ -1,7 +1,8 @@
 {
   "presets": ["es2015", "react"],
   "plugins": [
-    "add-module-exports"
+    "add-module-exports",
+    "transform-object-rest-spread"
   ],
   "ignore": [
     "node_modules"
