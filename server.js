@@ -1,8 +1,9 @@
 import co from 'co';
 import koa from 'koa';
 import route from 'koa-route';
+import moment from 'moment';
 import {index} from './lib/server/routes';
-
+moment.relativeTimeThreshold('m', 59);
 const app = koa();
 
 function cleanHandler(f) {
